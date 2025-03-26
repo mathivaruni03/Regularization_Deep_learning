@@ -1,59 +1,75 @@
 # Regularization_Deep_learning
-Jupyter Notebook demonstrating data augmentation techniques using Keras for image classification tasks. 
-# Data Augmentation Using Keras
+Overview
+This Jupyter Notebook demonstrates Regularization techniques in Deep Learning using the Iris dataset. Regularization methods help prevent overfitting and improve generalization in neural networks.
 
-## Overview
-This repository contains a **Jupyter Notebook** demonstrating **data augmentation** techniques using **Keras** for **image classification** tasks. Data augmentation is an essential technique in deep learning, allowing for improved model generalization by artificially expanding the dataset through transformations.
+Objectives
+Understand the need for regularization in deep learning.
 
----
+Implement L1 (Lasso) and L2 (Ridge) regularization.
 
-## Implementation Steps
-1. **Import Required Libraries**: TensorFlow, Keras, NumPy, Matplotlib.
-2. **Load Dataset**: Use a sample dataset or a custom image dataset.
-3. **Define Data Augmentation Techniques**:  
-   - Rotation  
-   - Zooming  
-   - Flipping  
-   - Shearing  
-   - Brightness Adjustment  
-   - Rescaling  
-4. **Use `ImageDataGenerator` from Keras** to apply augmentation.
-5. **Visualize Augmented Images** before training.
-6. **Train a CNN Model** with augmented images.
-7. **Evaluate Model Performance** with and without augmentation.
-8. **Make Predictions** and display results.
+Apply Dropout to improve model robustness.
 
----
+Evaluate model performance with and without regularization.
 
-## Files in this Repository
-- `Data_Augmentation_Using_Keras.ipynb` → Jupyter Notebook with code and explanations
-- `datasets/` → Sample dataset folder for testing
-- `README.md` → This documentation file
+Dataset
+The Iris dataset is used, containing 150 samples from three different species of iris flowers:
 
----
+Features: Sepal Length, Sepal Width, Petal Length, Petal Width
 
-## How to Use
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/Data_Augmentation_Using_Keras.git
-   cd Data_Augmentation_Using_Keras
-   ```
-2. **Install dependencies**:
-   ```bash
-   pip install tensorflow keras numpy matplotlib
-   ```
-3. **Open Jupyter Notebook**:
-   ```bash
-   jupyter notebook
-   ```
-4. **Run the `Data_Augmentation_Using_Keras.ipynb` file**.
+Target: Species (Setosa, Versicolor, Virginica)
 
----
+Implementation Steps
+Import Required Libraries
 
-## Technologies Used
-- Python  
-- TensorFlow / Keras  
-- NumPy  
-- Matplotlib  
-- OpenCV (optional for custom preprocessing)
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from tensorflow import keras
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+Load and Preprocess Data
 
+Convert categorical labels to numeric using Label Encoding.
+
+Normalize features using StandardScaler.
+
+Build Neural Network Model
+
+Define a simple feedforward neural network using Keras.
+
+Apply L1/L2 regularization to dense layers.
+
+Use Dropout layers for additional regularization.
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.regularizers import l1, l2
+
+model = Sequential([
+    Dense(64, activation='relu', kernel_regularizer=l2(0.01), input_shape=(4,)),
+    Dropout(0.5),
+    Dense(32, activation='relu', kernel_regularizer=l1(0.01)),
+    Dropout(0.5),
+    Dense(3, activation='softmax')
+])
+Compile and Train the Model
+
+python:
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+history = model.fit(X_train, y_train, epochs=50, validation_data=(X_test, y_test))
+
+Evaluate Model Performance
+Plot training and validation accuracy/loss.
+Compare models with and without regularization.
+
+Results & Observations
+Without regularization, the model may overfit (high training accuracy, low validation accuracy).
+With L1/L2 regularization, the model generalizes better.
+Dropout further improves model robustness.
+
+Conclusion
+Regularization techniques like L1, L2, and Dropout help control overfitting and improve the generalization ability of deep learning models.
+
+Dependencies
+Ensure you have the following installed:
+pip install tensorflow numpy pandas scikit-learn matplotlib
